@@ -30,6 +30,7 @@ bool esp = false;
 
 bool glow = false;
 bool glowTeam = false;
+float glowWidth = 100;
 ImColor enemyGlowColor;
 ImColor teamGlowColor;
 
@@ -77,6 +78,7 @@ long __stdcall hkEndScene(LPDIRECT3DDEVICE9 pDevice)
 			ImGui::Checkbox("Enable for team", &glowTeam);
 			ImGui::ColorEdit4("Team", (float*)&teamGlowColor);
 			ImGui::ColorEdit4("Enemy", (float*)&enemyGlowColor);
+			ImGui::SliderFloat("Glow width", &glowWidth, 0, 100);
 			ImGui::Dummy(ImVec2(0, 20));
 
 			ImGui::Text("ESP");
@@ -184,7 +186,7 @@ DWORD WINAPI GlowThread(LPVOID lp) {
 								*(float*)(glowManager + entityGlow * 0x38 + 0x8) = teamGlowColor.Value.x;
 								*(float*)(glowManager + entityGlow * 0x38 + 0xC) = teamGlowColor.Value.y;
 								*(float*)(glowManager + entityGlow * 0x38 + 0x10) = teamGlowColor.Value.z;
-								*(float*)(glowManager + entityGlow * 0x38 + 0x14) = teamGlowColor.Value.w;
+								*(float*)(glowManager + entityGlow * 0x38 + 0x14) = glowWidth / 100;
 
 								*(bool*)(glowManager + entityGlow * 0x38 + 0x28) = true;
 							}
@@ -193,7 +195,7 @@ DWORD WINAPI GlowThread(LPVOID lp) {
 							*(float*)(glowManager + entityGlow * 0x38 + 0x8) = enemyGlowColor.Value.x;
 							*(float*)(glowManager + entityGlow * 0x38 + 0xC) = enemyGlowColor.Value.y;
 							*(float*)(glowManager + entityGlow * 0x38 + 0x10) = enemyGlowColor.Value.z;
-							*(float*)(glowManager + entityGlow * 0x38 + 0x14) = enemyGlowColor.Value.w;
+							*(float*)(glowManager + entityGlow * 0x38 + 0x14) = glowWidth / 100;
 
 							*(bool*)(glowManager + entityGlow * 0x38 + 0x28) = true;
 						}
